@@ -10,7 +10,7 @@ const tmdbApi = axios.create({
 
 export const getPopularMovies = async () => {
   try {
-    const response = await tmdbApi.get('/trending/movie/month?language=en-US');
+    const response = await tmdbApi.get('/trending/movie/day?language=en-US');
     return response.data;
   } catch (error) {
     console.error('Error fetching popular movies:', error);
