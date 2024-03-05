@@ -1,8 +1,8 @@
 import { DataResult } from '@progress/kendo-data-query';
 import { Grid, GridColumn } from '@progress/kendo-react-grid';
 import { useEffect, useState } from 'react';
-import { getPopularMovies } from '../../services/api';
-import { getImageUrl } from '../../utils/image';
+import { getPopularMovies } from 'services/api';
+import { getImageUrl } from 'utils/image';
 
 export const KendoGrid = () => {
   const [movies, setMovies] = useState([]);
