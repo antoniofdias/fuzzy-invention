@@ -32,11 +32,13 @@ export const KendoGrid = () => {
     dataItem: { poster_path: string; title: string };
   }) => {
     return (
-      <img
-        src={getImageUrl(dataItem?.dataItem?.poster_path)}
-        alt={dataItem?.dataItem?.title}
-        style={{ maxWidth: '100%' }}
-      />
+      <td>
+        <img
+          src={getImageUrl(dataItem?.dataItem?.poster_path)}
+          alt={dataItem?.dataItem?.title}
+          style={{ maxWidth: '100%' }}
+        />
+      </td>
     );
   };
 
