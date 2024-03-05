@@ -1,14 +1,18 @@
 import '@progress/kendo-theme-default/dist/all.css';
-import { DataProvider } from 'context';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './App.css';
 import { KendoGrid } from './components/KendoGrid';
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <KendoGrid />,
+  },
+]);
 
 function App() {
   return (
     <div className="App">
-      <DataProvider>
-        <KendoGrid />
-      </DataProvider>
+      <RouterProvider router={router} />
     </div>
   );
 }

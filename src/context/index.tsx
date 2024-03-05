@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { FC, ReactNode, createContext, useState } from 'react';
 
 export type MovieType = {
   adult: boolean;
@@ -23,7 +23,7 @@ type DataContextType = {
   setData: (newData: MovieType[]) => void;
 };
 
-export const DataContext = React.createContext<DataContextType>({
+export const DataContext = createContext<DataContextType>({
   data: [],
   setData: () => {
     return;
@@ -31,10 +31,10 @@ export const DataContext = React.createContext<DataContextType>({
 });
 
 type DataProviderProps = {
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
-export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
+export const DataProvider: FC<DataProviderProps> = ({ children }) => {
   const [data, setData] = useState<MovieType[]>([]);
 
   return (
