@@ -21,11 +21,17 @@ export type MovieType = {
 type DataContextType = {
   data: MovieType[];
   setData: (newData: MovieType[]) => void;
+  filteredData: MovieType[];
+  setFilteredData: (newFilteredData: MovieType[]) => void;
 };
 
 export const DataContext = React.createContext<DataContextType>({
   data: [],
   setData: () => {
+    return;
+  },
+  filteredData: [],
+  setFilteredData: () => {
     return;
   },
 });
@@ -36,12 +42,15 @@ type DataProviderProps = {
 
 export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
   const [data, setData] = useState<MovieType[]>([]);
+  const [filteredData, setFilteredData] = useState<MovieType[]>([]);
 
   return (
     <DataContext.Provider
       value={{
         data,
         setData,
+        filteredData,
+        setFilteredData,
       }}
     >
       {children}
