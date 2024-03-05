@@ -1,20 +1,22 @@
 import { DataResult } from '@progress/kendo-data-query';
 import { Grid, GridColumn } from '@progress/kendo-react-grid';
-import { useEffect, useState } from 'react';
+import { DataContext, MovieType } from 'context';
+import { useContext, useEffect, useState } from 'react';
 import { getPopularMovies } from 'services/api';
 import { getImageUrl } from 'utils/image';
 
 export const KendoGrid = () => {
-  const [movies, setMovies] = useState([]);
-  const [filteredMovies, setFilteredMovies] = useState([]);
+  const { data, setData } = useContext(DataContext);
+  const [filteredMovies, setFilteredMovies] = useState<MovieType[]>([]);
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
     const fetchMovies = async () => {
       try {
         const popularMovies = await getPopularMovies();
-        setMovies(popularMovies.results);
+        setData(popularMovies.results);
         setFilteredMovies(popularMovies.results);
+        console.log(popularMovies.results);
       } catch (error) {
         console.error('Error fetching popular movies:', error);
       }
@@ -24,13 +26,13 @@ export const KendoGrid = () => {
   }, []);
 
   useEffect(() => {
-    if (movies) {
-      const updatedFilterdMovies = movies?.filter((movie: { title: string }) =>
+    if (data) {
+      const updatedFilterdMovies = data?.filter((movie: { title: string }) =>
         movie.title.toLowerCase().includes(filter.toLowerCase())
       );
       setFilteredMovies(updatedFilterdMovies);
     }
-  }, [filter, movies]);
+  }, [filter, data]);
 
   const gridData: DataResult = {
     data: filteredMovies,
@@ -58,7 +60,7 @@ export const KendoGrid = () => {
         placeholder="Filter by title"
         style={{ width: '100%' }}
       />
-      {movies && (
+      {data && (
         <Grid data={gridData.data} total={gridData.total}>
           <GridColumn field="poster_path" title="Poster" cell={renderImage} />
           <GridColumn field="title" title="title" />
