@@ -12,13 +12,13 @@ import {
 } from '@progress/kendo-react-grid';
 import { DataContext } from 'context';
 import { useContext, useEffect, useState } from 'react';
-import { getMovieDetails, getPopularMovies } from 'services/tmdbApi';
+import { getPopularMovies, submitMovieWithDetails } from 'services/tmdbApi';
 import { getImageUrl } from 'utils/image';
 
 export const KendoGrid = () => {
   const handleSubmit = () => {
     if (selectedMovies.length > 0) {
-      getMovieDetails(selectedMovies);
+      submitMovieWithDetails(selectedMovies);
     }
   };
 

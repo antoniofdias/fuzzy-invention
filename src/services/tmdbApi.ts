@@ -19,7 +19,7 @@ export const getPopularMovies = async () => {
   }
 };
 
-export const getMovieDetails = async (movieIds: string[]) => {
+export const submitMovieWithDetails = async (movieIds: string[]) => {
   try {
     const requests = movieIds.map((movieId) => {
       return tmdbApi.get(
