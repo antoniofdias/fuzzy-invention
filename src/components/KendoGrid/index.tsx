@@ -12,7 +12,7 @@ import {
 } from '@progress/kendo-react-grid';
 import { DataContext } from 'context';
 import { useContext, useEffect, useState } from 'react';
-import { getMovieDetails, getPopularMovies } from 'services/api';
+import { getMovieDetails, getPopularMovies } from 'services/tmdbApi';
 import { getImageUrl } from 'utils/image';
 
 export const KendoGrid = () => {

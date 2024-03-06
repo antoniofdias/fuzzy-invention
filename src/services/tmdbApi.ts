@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { createMultipleMovies } from './backendApi';
 
 const tmdbApi = axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL,
+  baseURL: process.env.REACT_APP_TMDB_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${process.env.REACT_APP_API_TOKEN}`,
@@ -37,7 +38,7 @@ export const getMovieDetails = async (movieIds: string[]) => {
       };
     });
 
-    console.log(movieDetails);
+    createMultipleMovies(movieDetails);
   } catch (error) {
     console.error('Error fetching movie details:', error);
   }
