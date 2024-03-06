@@ -1,3 +1,5 @@
+import { Upload } from '@mui/icons-material/';
+import Fab from '@mui/material/Fab';
 import {
   CompositeFilterDescriptor,
   DataResult,
@@ -14,13 +16,35 @@ import { getPopularMovies } from 'services/api';
 import { getImageUrl } from 'utils/image';
 
 export const KendoGrid = () => {
-  const { data, setData } = useContext(DataContext);
+  const handleSubmit = () => {
+    console.log(selectedMovies);
+  };
 
-  const initialFilter: CompositeFilterDescriptor = {
+  function FloatingActionButtons() {
+    return (
+      <Fab
+        color="primary"
+        variant="extended"
+        sx={{
+          position: 'fixed',
+          bottom: '2rem',
+          right: '2rem',
+          zIndex: 1000,
+        }}
+        onClick={handleSubmit}
+      >
+        <Upload sx={{ mr: 1 }} />
+        Upload
+      </Fab>
+    );
+  }
+
+  const { data, setData } = useContext(DataContext);
+  const [selectedMovies, setSelectedMovies] = useState<string[]>([]);
+  const [filter, setFilter] = useState<CompositeFilterDescriptor>({
     logic: 'and',
     filters: [{ field: 'title', operator: 'contains', value: '' }],
-  };
-  const [filter, setFilter] = useState(initialFilter);
+  });
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -63,32 +87,62 @@ export const KendoGrid = () => {
     return <td>{formattedDate}</td>;
   };
 
+  const handleCheckboxChange = (id: string) => {
+    setSelectedMovies((prevSelectedMovies) => {
+      if (prevSelectedMovies.includes(id)) {
+        return prevSelectedMovies.filter((movie) => movie !== id);
+      } else {
+        return [...prevSelectedMovies, id];
+      }
+    });
+  };
+
+  const renderCheckbox = (dataItem: { dataItem: { id: string } }) => {
+    return (
+      <td>
+        <input
+          type="checkbox"
+          checked={selectedMovies.includes(dataItem.dataItem.id)}
+          onChange={() => handleCheckboxChange(dataItem.dataItem.id)}
+        />
+      </td>
+    );
+  };
+
   return (
     data && (
-      <Grid
-        data={filterBy(gridData.data, filter)}
-        total={gridData.total}
-        filterable={true}
-        filter={filter}
-        onFilterChange={(e: GridFilterChangeEvent) => setFilter(e.filter)}
-      >
-        <GridColumn
-          field="poster_path"
-          title="Poster"
-          cell={renderImage}
-          filterable={false}
-        />
-        <GridColumn field="title" title="Title" />
-        <GridColumn
-          field="release_date"
-          title="Release Date"
-          filter="date"
-          cell={renderReleaseDate}
-          filterable={false}
-        />
-
-        <GridColumn field="overview" title="Overview" />
-      </Grid>
+      <div style={{ position: 'relative' }}>
+        <Grid
+          data={filterBy(gridData.data, filter)}
+          total={gridData.total}
+          filterable={true}
+          filter={filter}
+          onFilterChange={(e: GridFilterChangeEvent) => setFilter(e.filter)}
+        >
+          <GridColumn
+            field="selected"
+            title="Select"
+            cell={renderCheckbox}
+            width={50}
+          />
+          <GridColumn
+            field="poster_path"
+            title="Poster"
+            cell={renderImage}
+            filterable={false}
+          />
+          <GridColumn field="title" title="Title" />
+          <GridColumn
+            field="release_date"
+            title="Release Date"
+            filter="date"
+            cell={renderReleaseDate}
+            filterable={false}
+          />
+          <GridColumn field="overview" title="Overview" />
+        </Grid>
+        <FloatingActionButtons />
+      </div>
     )
   );
 };
