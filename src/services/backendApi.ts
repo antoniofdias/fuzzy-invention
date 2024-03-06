@@ -16,9 +16,12 @@ export const createMultipleMovies = async (
       user_id: 1,
       movie_data: movies,
     });
-    console.log(response.data);
+    if (response.data) {
+      alert('The movies were created successfully!');
+    }
   } catch (error) {
     console.error('Error submitting movies:', error);
+    alert('An error occured while submitting. Please try again later');
     throw error;
   }
 };
