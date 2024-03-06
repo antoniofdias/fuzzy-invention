@@ -17,3 +17,28 @@ export const getPopularMovies = async () => {
     throw error;
   }
 };
+
+export const getMovieDetails = async (movieIds: string[]) => {
+  try {
+    const requests = movieIds.map((movieId) => {
+      return tmdbApi.get(
+        `/movie/${movieId}?language=en-US&append_to_response=credits`
+      );
+    });
+
+    const responses = await Promise.all(requests);
+    const movieDetails = responses.map((response) => {
+      return {
+        title: response.data.title,
+        director:
+          response.data.credits.crew.filter(
+            (crewmate: { job: string }) => crewmate.job === 'Director'
+          )[0]?.name || 'Unknown',
+      };
+    });
+
+    console.log(movieDetails);
+  } catch (error) {
+    console.error('Error fetching movie details:', error);
+  }
+};
